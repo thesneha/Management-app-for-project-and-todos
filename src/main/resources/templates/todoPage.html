@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Demo</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <!--<link th:href="@{/main.css}" rel="stylesheet" />-->
+    <link href="../static/index.css" th:href="@{/index.css}" rel="stylesheet" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<h1 style="margin-bottom: 15px" th:text="${project.projectName}"> </h1>
+<a style="margin-bottom: 30px"th:href="@{exportAsGist(id=${project.id})}" class="btn btn-danger">Add To Gist</a>
+
+<a style="margin-bottom: 30px"th:href="@{../}" class="btn btn-danger">Home</a>
+
+<a th:if="${gistURL != null}" style="margin-bottom: 30px"th:href="${gistURL}" >Click here to see in GIST</a>
+
+<div style="margin-bottom: 15px" id="myDIV" class="header">
+    <h2 style="margin:5px">My To Do List</h2>
+    <form action="#" th:action="@{/todo}" th:object="${todoRequest}" method="post">
+        <input type="text" style="color: black" id="description"  th:field="*{description}" placeholder="Todo Description"/></p>
+        <input type="hidden" id="projectId" th:field="*{projectId}" />
+        <input type="hidden" id="userId" th:field="${project.userId}" />
+        <input class="addBtn" type="submit" value="Add" />
+    </form>
+
+    <p th:if="${errorMsg != null}" style="margin-bottom: 30px ; background-color: burlywood;" th:text="${errorMsg}" ></p>
+    <!--<input type="text" id="myInput" placeholder="New Project">-->
+    <!--<span onclick="newElement()" class="addBtn">Add</span>-->
+</div>
+
+
+<ul style="margin-bottom: 15px" id="pendingtodoList">
+    <table th:if="${ not#lists.isEmpty(todos)}" class="table table-responsive">
+        <tr style="background-color: burlywood;">
+
+            <td style="font-weight: bold;width: 70%;">Todo's[Pending]</td>
+            <td style="font-weight: bold;width: 15%;">Mark Completed</td>
+            <td style="font-weight: bold;width: 15%;">Delete</td>
+
+        </tr>
+
+        <tr th:each="ts : ${todos}">
+
+            <td th:text="${ts.description}"/>
+
+            <td >
+                <a th:href="@{complete(id=${ts.id},userId=${project.userId})}" class="btn btn-danger">Complete</a>
+            </td>
+            <td >
+                <a th:href="@{deleteTodo(id=${ts.id},userId=${project.userId})}" class="btn btn-danger">Delete</a>
+            </td>
+
+        </tr>
+    </table>
+
+</ul>
+
+<ul id="completedtodoList">
+    <table th:if="${ not#lists.isEmpty(completedTodos)}" class="table table-responsive">
+        <tr style="background-color: burlywood;">
+
+            <td style="font-weight: bold;width: 70%;">Todo's[Marked Done]</td>
+            <td style="font-weight: bold;width: 15%;"></td>
+            <td style="font-weight: bold;width: 15%;">Delete</td>
+        </tr>
+
+        <tr th:each="ts : ${completedTodos}">
+
+            <td th:text="${ts.description}"/>
+            <td></td>
+            <td >
+                <a th:href="@{deleteTodo(id=${ts.id},userId=${project.userId})}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    </table>
+
+</ul>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+

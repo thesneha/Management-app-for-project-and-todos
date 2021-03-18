@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Demo</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <!--<link th:href="@{/main.css}" rel="stylesheet" />-->
+    <link href="../static/index.css" th:href="@{/index.css}" rel="stylesheet" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+<body>
+<h1>Home</h1>
+<div style="margin-bottom: 15px" id="myDIV" class="header">
+    <h2 style="margin:5px">My To Do List</h2>
+    <form action="#" th:action="@{/}" th:object="${projectRequest}" method="post">
+        <input type="text" style="color: black" id="projectName"  th:field="*{projectName}" placeholder="New Project"/></p>
+        <input type="hidden" id="userId" th:field="*{userId}" />
+        <input class="addBtn" type="submit" value="Add" />
+    </form>
+
+    <p th:if="${errorMsg != null}" style="margin-bottom: 30px ; background-color: burlywood;" th:text="${errorMsg}" ></p>
+    <!--<input type="text" id="myInput" placeholder="New Project">-->
+    <!--<span onclick="newElement()" class="addBtn">Add</span>-->
+</div>
+
+<ul id="projectList">
+    <!--<th:block th:each="project : ${projects}">-->
+        <!--<li th:utext="${project.projectName}" >-->
+            <!--<div> vikass-->
+                <!--<form action="#" th:action="@{/}" th:object="${projectRequest}" method="delete">-->
+                    <!--<input type="hidden" th:field="*{project.id}"/>-->
+                    <!--<input class="addBtn" type="Submit" value="Delete"/>-->
+                <!--</form>-->
+            <!--</div>-->
+        <!--</li>-->
+    <!--</th:block>-->
+
+
+    <table class="table table-responsive">
+        <tr style="background-color: burlywood;">
+            <td style="font-weight: bold;">Project Name</td>
+            <td style="font-weight: bold;">Total TODOs</td>
+            <td style="font-weight: bold;">Pending TODOs</td>
+            <td style="font-weight: bold;"></td>
+            <td style="font-weight: bold;"></td>
+        </tr>
+
+        <tr th:each="project : ${projects}">
+            <td th:text="${project.projectName}"/>
+            <td th:text="${project.noOfTodos}"/>
+            <td th:text="${project.noOfTodos - project.completedTodos}"/>
+            <td >
+                <a th:href="@{todo(projectId=${project.id},userId=${project.userId})}" class="btn btn-danger">View</a>
+            </td>
+            <td >
+                <a th:href="@{delete(id=${project.id},userId=${project.userId})}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    </table>
+
+</ul>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+
